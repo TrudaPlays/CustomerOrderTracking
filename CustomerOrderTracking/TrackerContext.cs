@@ -27,10 +27,15 @@ namespace CustomerOrderTracking
             });
 
             //use the ModelBuilder.Entity to set a one-to-many relationship between customer and orders
-            
-            
             //enforce the foriegn key with HasForeignKey
             //use OnDelete to cascade delete orders for the deleted customer
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasMany(c => c.Orders)
+                      .WithOne(o => o.Customer)
+                      .HasForeignKey(o => o.CustomerId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
 
             //use ModelBuilder.Entity to ensure that Order has a Total Amount
             //set precision to (18,2)
