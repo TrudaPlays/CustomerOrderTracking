@@ -10,25 +10,25 @@ namespace CustomerOrderTracking
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
 
-        //create a protected override void to set the Data Source to CustomerOrders.db
+        //created a protected override void to set the Data Source to CustomerOrders.db
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlite("Data Source=CustomerOrders.db");
         }
 
-        //use this protected override method for OnModelCreating
-        //Pass in a model builder
+        //used this protected override method for OnModelCreating
+        //Passed in a model builder
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //ensure Customer has a unique email
+            //ensures Customer has a unique email
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasIndex(c => c.Email).IsUnique();
             });
 
-            //use the ModelBuilder.Entity to set a one-to-many relationship between customer and orders
-            //enforce the foriegn key with HasForeignKey
-            //use OnDelete to cascade delete orders for the deleted customer
+            //uses the ModelBuilder.Entity to set a one-to-many relationship between customer and orders
+            //enforces the foriegn key with HasForeignKey
+            //uses OnDelete to cascade delete orders for the deleted customer
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasMany(c => c.Orders)
@@ -37,8 +37,8 @@ namespace CustomerOrderTracking
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            //use ModelBuilder.Entity to ensure that Order has a Total Amount
-            //set precision to (18,2)
+            //uses ModelBuilder.Entity to ensure that Order has a Total Amount
+            //sets precision to (18,2)
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(o => o.TotalAmount)
